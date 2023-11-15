@@ -11,13 +11,13 @@ def timeline(request):
         form = forms.UsernameForm(request.POST)
         if form.is_valid():
             username = form.cleaned_data['username']
+            request.session['username'] = username
             return render(request, 'timeline.html', {'username': username})
         else:
             return render(request, 'error.html')
     elif request.method == 'GET':
-        # return redirect('index')
         form = forms.UsernameForm()
-        return render(request, 'index.html', {'form': form})
+        return render(request, 'timeline.html', {'username': request.session.get('username', 'anon')})
                 
 def user(request):
     return render(request, 'user.html')
